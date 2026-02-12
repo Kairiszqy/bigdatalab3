@@ -1,8 +1,7 @@
 #! /usr/bin/env python
-
+import csv
 from mrjob.job import MRJob
-
-
+import sys
 class MRMoviesByGenreCount(MRJob):
     """
     Find the distinct number of movies in specific genres over time
@@ -29,22 +28,28 @@ class MRMoviesByGenreCount(MRJob):
         """
 
         # Skip header line
-        if line.startswith("movie_id"):
-            return
-        
+
+        # if line.startswith("movie_id"):
+        #     return
+
         # Split CSV line into columns
-        parts = line.strip().split(',')
+        parts = line.split(',')
+
+
         
         # Make sure line has exactly 5 columns
-        if len(parts) != 5:
-            return
+        # if len(parts) != 5:
+        #     print("Skipping malformed line:", parts, file=sys.stderr)
+        #     return
         
+
         movie_id, title, year, genre, rating = parts
-        
+
         # Only count Western or Sci-Fi
         if genre in ("Western", "Sci-Fi"):
             # Emit (year, genre) as key, and 1 as value
-            yield (year, genre), 1
+    
+            yield (year, genre),1
 
     # optional: implement the combiner:
     # def combiner(self, key, values):
