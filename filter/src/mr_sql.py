@@ -44,7 +44,7 @@ class MRMoviesByGenreCount(MRJob):
         # Only count Western or Sci-Fi
         if genre in ("Western", "Sci-Fi"):
             # Emit (year, genre) as key, and 1 as value
-            yield (year, genre), movie_id
+            yield (year, genre), 1
 
     # optional: implement the combiner:
     # def combiner(self, key, values):
@@ -71,7 +71,7 @@ class MRMoviesByGenreCount(MRJob):
                     value corresponding to each key.
         """
         # use the key-value pairs to calculate the query result
-        yield key, len(set(values))
+        yield key, sum(values)
         pass
 
 # don't forget the '__name__' == '__main__' clause!
