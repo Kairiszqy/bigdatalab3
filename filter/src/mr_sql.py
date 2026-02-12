@@ -44,7 +44,7 @@ class MRMoviesByGenreCount(MRJob):
         # Only count Western or Sci-Fi
         if genre in ("Western", "Sci-Fi"):
             # Emit (year, genre) as key, and 1 as value
-            yield (year, genre), 1
+            yield (year, genre), movie_id
 
     # optional: implement the combiner:
     # def combiner(self, key, values):
