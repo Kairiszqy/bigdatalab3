@@ -27,17 +27,24 @@ class MRMoviesByGenreCount(MRJob):
                 your reducer does the result operations correctly.
 
         """
-        # yield key, value pairs for your program
-        title_year, genre = line.rsplit(",", 1)
-        title, year_part = title_year.rsplit("(", 1)
 
-        year = year_part.strip(")")
-        title = title.strip()
-        genre = genre.strip()
-
-        if genre in ["Western", "Sci-Fi"]:
-            yield (year, genre), title
-        pass
+        # Skip header line
+        if line.startswith("movie_id"):
+            return
+        
+        # Split CSV line into columns
+        parts = line.strip().split(',')
+        
+        # Make sure line has exactly 5 columns
+        if len(parts) != 5:
+            return
+        
+        movie_id, title, year, genre, rating = parts
+        
+        # Only count Western or Sci-Fi
+        if genre in ("Western", "Sci-Fi"):
+            # Emit (year, genre) as key, and 1 as value
+            yield (year, genre), 1
 
     # optional: implement the combiner:
     # def combiner(self, key, values):
