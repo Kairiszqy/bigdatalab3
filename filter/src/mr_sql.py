@@ -28,6 +28,15 @@ class MRMoviesByGenreCount(MRJob):
 
         """
         # yield key, value pairs for your program
+        title_year, genre = line.rsplit(",", 1)
+        title, year_part = title_year.rsplit("(", 1)
+
+        year = year_part.strip(")")
+        title = title.strip()
+        genre = genre.strip()
+
+        if genre in ["Western", "Sci-Fi"]:
+            yield (year, genre), title
         pass
 
     # optional: implement the combiner:
@@ -55,6 +64,7 @@ class MRMoviesByGenreCount(MRJob):
                     value corresponding to each key.
         """
         # use the key-value pairs to calculate the query result
+        yield key, len(set(values))
         pass
 
 # don't forget the '__name__' == '__main__' clause!
